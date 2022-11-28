@@ -48,20 +48,20 @@ if (theMarker = onclick){
 }
 
 
-// fetchWeather().then((weatherArray) => {
-//     console.log(weatherArray)
-//     for (let weather of weatherArray.properties.timeseries) { 
-//         var stavanger = L.icon({
-//             iconUrl: `Assets/weather_icons/${(weather.data.next_1_hours.summary.symbol_code)}.png`,
+fetchWeather().then((weatherArray) => {
+    console.log(weatherArray)
+    for (let weather of weatherArray.properties.timeseries) { 
+        var stavanger = L.icon({
+            iconUrl: `Assets/weather_icons/${(weather.data.next_1_hours.summary.symbol_code)}.png`,
             
-//             iconSize:     [50, 50],
-//             iconAnchor:   [20, 20],
-//             popupAnchor:  [0, 0],
-//         });
-//         var stavanger = L.marker([58.97, 5.73], {icon: stavanger}).addTo(map);
-//         stavanger.bindPopup(`Det er ${Math.round(weather.data.instant.details.air_temperature)}°C i Stavanger!`);
-//     }
-// })
+            iconSize:     [50, 50],
+            iconAnchor:   [20, 20],
+            popupAnchor:  [0, 0],
+        });
+        var stavanger = L.marker([58.97, 5.73], {icon: stavanger}).addTo(map);
+        stavanger.bindPopup(`Det er ${Math.round(weather.data.instant.details.air_temperature)}°C i Stavanger!`);
+    }
+})
 fetchWeather2().then((weatherArray) => {
     console.log(weatherArray)
     for (let weather of weatherArray.properties.timeseries) {  
@@ -74,14 +74,6 @@ fetchWeather2().then((weatherArray) => {
         });
         var oslo = L.marker([59.91, 10.74], {icon: oslo}).addTo(map);
         oslo.bindPopup(`Det er ${Math.round(weather.data.instant.details.air_temperature)}°C i Oslo!`);
-
-        map.on('zoomend', function() {
-            if (map.getZoom() >7){
-                    map.removeLayer(IconGroup);
-            }
-            else {
-                    map.addLayer(IconGroup);
-                }
         });
     }
 })
@@ -113,9 +105,3 @@ fetchWeather4().then((weatherArray) => {
         trondheim.bindPopup(`Det er ${Math.round(weather.data.instant.details.air_temperature)}°C i Trondheim!`);
     }
 })
-
-var weatherIcon = new L.IconGroup();
-
-IconGroup.addLayer(oslo);
-
-// stavanger.bindPopup(`${Math.round(weather.data.instant.details.air_temperature)}°C`);
