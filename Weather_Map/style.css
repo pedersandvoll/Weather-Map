@@ -1,0 +1,9 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: monospace, sans-serif, monaco;
+}
+
+#map{ 
+    height: 1480px; 
+}
