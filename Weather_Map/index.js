@@ -1,107 +1,98 @@
-let weatherApiUrl = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=58.97&lon=5.73'
-let weatherApiUrl2 = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=59.91&lon=10.74'
-let weatherApiUrl3 = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=60.39&lon=5.32'
-let weatherApiUrl4 = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=63.43&lon=10.40'
+var weatherApi = [
+  { name: "Oslo", lat: 59.91, lng: 10.74 },
+  { name: "Bergen", lat: 60.39, lng: 5.32 },
+  { name: "Trondheim", lat: 63.43, lng: 10.40 },
+  { name: "Hammerfest", lat: 70.66, lng: 23.67 },
+  { name: "Tromsø", lat: 69.64, lng: 18.97 },
+  { name: "Stockholm", lat: 59.33, lng: 18.07 },
+  { name: "København", lat: 55.65, lng: 12.60 },
+  { name: "London", lat: 51.50, lng: -0.12 },
+  { name: "Berlin", lat: 52.52, lng: 13.42 },
+  { name: "Amsterdam", lat: 52.36, lng: 4.90 },
+  { name: "Helsinki", lat: 60.17, lng: 24.95 },
+  { name: "Reykjavik", lat: 64.13, lng: -21.88 },
+];
 
+var arrayLength = weatherApi.length;
+for (var i = 0; i < arrayLength; i++) {
+  fetchWeather(weatherApi[i]);
+}
 
+function fetchWeather(location) {
+  const response = fetch(
+    `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${location.lat}&lon=${location.lng}`
+  )
+    .then((r) => r.json())
+    .then((data) => {
+      var weather = data.properties.timeseries[0];
+      console.log(data.properties.timeseries[0])
 
-async function fetchWeather() {
-    const response = await fetch(weatherApiUrl);
-    console.log(response)
-    return await response.json();
-}
-async function fetchWeather2() {
-    const response = await fetch(weatherApiUrl2);
-    console.log(response)
-    return await response.json();
-}
-async function fetchWeather3() {
-    const response = await fetch(weatherApiUrl3);
-    console.log(response)
-    return await response.json();
-}
-async function fetchWeather4() {
-    const response = await fetch(weatherApiUrl4);
-    console.log(response)
-    return await response.json();
-}
-var map = L.map('map').setView([58.97, 5.73], 5);
+      var weatherIcon = L.icon({
+        iconUrl: `Assets/weather_icons/${weather.data.next_1_hours.summary.symbol_code}.png`,
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        iconSize: [50, 50],
+        iconAnchor: [0, 55],
+        popupAnchor: [30, -45],
+      });
+
+      locationMarker = L.marker([location.lat, location.lng], {
+        icon: weatherIcon,
+      }).addTo(map);
+      locationMarker.bindPopup(
+        `Det er ${Math.round(
+          weather.data.instant.details.air_temperature
+        )}°C i ${location.name}!`
+      );
+    });
+}
+var map = L.map("map").setView([58.97, 5.73], 5);
+
+L.tileLayer(
+  "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+  {
     minZoom: 5,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+  }
+).addTo(map);
+
+var popup;
 
 var newMarker = {};
-  map.on('click',function(e){
-    lat = e.latlng.lat;
-    lon = e.latlng.lng;
-    console.log("You clicked the map at LAT: "+ lat+" and LONG: "+lon );
-        if (newMarker != undefined) {
-            map.removeLayer(newMarker);
-        };
-    newMarker = L.marker([lat,lon]).addTo(map);
+map.on("click", function (e) {
+  fetch(
+    "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=" +
+      e.latlng.lat +
+      "&lon=" +
+      e.latlng.lng
+  )
+    .then((r) => r.json())
+    .then((data) => {
+      lat = e.latlng.lat;
+      lon = e.latlng.lng;
+      console.log("You clicked the map at LAT: " + lat + " and LONG: " + lon);
+      if (newMarker != undefined) {
+        map.removeLayer(newMarker);
+      }
+      var weather = data.properties.timeseries[0];
+
+      var weatherIcon = L.icon({
+        iconUrl: `Assets/weather_icons/${weather.data.next_1_hours.summary.symbol_code}.png`,
+
+        iconSize: [50, 50],
+        iconAnchor: [20, 20],
+        popupAnchor: [0, -10],
+      });
+
+      newMarker = L.marker([lat, lon], { icon: weatherIcon }).addTo(map);
+      newMarker
+        .bindPopup(
+          `Det er ${Math.round(
+            weather.data.instant.details.air_temperature
+          )}°C!`
+        )
+        .openPopup();
+    });
 });
 
-if (theMarker = onclick){
-    map.removeLayer(newMarker)
+if ((newMarker = onclick)) {
+  map.removeLayer(newMarker);
 }
-
-
-fetchWeather().then((weatherArray) => {
-    console.log(weatherArray)
-    for (let weather of weatherArray.properties.timeseries) { 
-        var stavanger = L.icon({
-            iconUrl: `Assets/weather_icons/${(weather.data.next_1_hours.summary.symbol_code)}.png`,
-            
-            iconSize:     [50, 50],
-            iconAnchor:   [20, 20],
-            popupAnchor:  [0, 0],
-        });
-        var stavanger = L.marker([58.97, 5.73], {icon: stavanger}).addTo(map);
-        stavanger.bindPopup(`Det er ${Math.round(weather.data.instant.details.air_temperature)}°C i Stavanger!`);
-    }
-})
-fetchWeather2().then((weatherArray) => {
-    console.log(weatherArray)
-    for (let weather of weatherArray.properties.timeseries) {  
-        var oslo = L.icon({
-            iconUrl: `Assets/weather_icons/${(weather.data.next_1_hours.summary.symbol_code)}.png`,
-            
-            iconSize:     [50, 50],
-            iconAnchor:   [20, 20],
-            popupAnchor:  [0, 0]
-        });
-        var oslo = L.marker([59.91, 10.74], {icon: oslo}).addTo(map);
-        oslo.bindPopup(`Det er ${Math.round(weather.data.instant.details.air_temperature)}°C i Oslo!`);
-        });
-    }
-})
-fetchWeather3().then((weatherArray) => {
-    console.log(weatherArray)
-    for (let weather of weatherArray.properties.timeseries) {  
-        var bergen = L.icon({
-            iconUrl: `Assets/weather_icons/${(weather.data.next_1_hours.summary.symbol_code)}.png`,
-            
-            iconSize:     [50, 50],
-            iconAnchor:   [20, 20],
-            popupAnchor:  [0, 0]
-        });
-        var bergen = L.marker([60.39, 5.32], {icon: bergen}).addTo(map);
-        bergen.bindPopup(`Det er ${Math.round(weather.data.instant.details.air_temperature)}°C i Bergen!`);
-    }
-})
-fetchWeather4().then((weatherArray) => {
-    console.log(weatherArray)
-    for (let weather of weatherArray.properties.timeseries) {  
-        var trondheim = L.icon({
-            iconUrl: `Assets/weather_icons/${(weather.data.next_1_hours.summary.symbol_code)}.png`,
-            
-            iconSize:     [50, 50],
-            iconAnchor:   [20, 20],
-            popupAnchor:  [0, 0]
-        });
-        var trondheim = L.marker([63.43, 10.40], {icon: trondheim}).addTo(map);
-        trondheim.bindPopup(`Det er ${Math.round(weather.data.instant.details.air_temperature)}°C i Trondheim!`);
-    }
-})
