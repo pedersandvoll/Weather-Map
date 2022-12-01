@@ -1,14 +1,36 @@
-*{
-    padding: 0;
-    margin: 0;
-    font-family: monospace, sans-serif, monaco;
+* {
+  padding: 0;
+  margin: 0;
+  font-family: monospace, sans-serif, monaco;
+  font-size: 15px;
+  color: black;
 }
 
-#map{ 
-    height: 1480px; 
+#map {
+  height: 1080px;
 }
 
 body {
   overflow-y: hidden;
   overflow-x: hidden;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:not(:checked) {
+  background: #999;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  padding: 0 0 0 0px;
+}
+
+input[type="checkbox"]:checked {
+  background: #0080ff;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  padding: 0 0 0 0px;
 }
