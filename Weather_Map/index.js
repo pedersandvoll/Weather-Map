@@ -11,12 +11,16 @@ var basicDark = L.tileLayer(
 
 var basicLight = L.tileLayer(
   "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
-  {}
+  {
+    minZoom: 3,
+  }
 );
 
 var advanced = L.tileLayer(
   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-  {}
+  {
+    minZoom: 3,
+  }
 );
 
 //leaflet layer control
