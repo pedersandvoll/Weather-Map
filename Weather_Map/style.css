@@ -6,7 +6,7 @@
   color: black;
 }
 
-#map {
+#map{
   height: 1080px;
 }
 
@@ -34,3 +34,18 @@ input[type="checkbox"]:checked {
   display: inline-block;
   padding: 0 0 0 0px;
 }
+
+/* layer control */
+
+.leaflet-control-layers-toggle {
+  background-image: url(assets/more.png) !important;
+	background-color: white;
+  background-size: 40px 40px;
+  border-radius: 25px;
+}
+
+.leaflet-control-layers-expanded {
+  color: black;
+	background-color: white;
+}
+
