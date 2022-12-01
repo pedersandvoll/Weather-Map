@@ -19,6 +19,14 @@ var advanced = L.tileLayer(
   {}
 );
 
+//leaflet layer control
+
+var baseMaps = {
+  "Basic Dark Theme": basicDark,
+  "Basic light Theme": basicLight,
+  Advanced: advanced,
+};
+
 var hideMarkers = L.layerGroup([]);
 
 L.control.layers(baseMaps).addTo(map);
@@ -26,13 +34,6 @@ L.control.layers(baseMaps).addTo(map);
 map.addControl(new L.Control.Fullscreen());
 
 L.control.locate().addTo(map);
-
-//leaflet layer control
-var baseMaps = {
-  "Basic Dark Theme": basicDark,
-  "Basic light Theme": basicLight,
-  Advanced: advanced,
-};
 
 // show markers and popup when markers is clicked
 
