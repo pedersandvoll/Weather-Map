@@ -31,8 +31,6 @@ var baseMaps = {
   Advanced: advanced,
 };
 
-var hideMarkers = L.layerGroup([]);
-
 L.control.layers(baseMaps).addTo(map);
 
 map.addControl(new L.Control.Fullscreen());
@@ -95,8 +93,6 @@ locationLayer.addTo(map);
 
 // view degree based on coordinates
 
-var popup;
-
 var newMarker = {};
 map.on("click", function (e) {
   fetch(
@@ -133,7 +129,6 @@ map.on("click", function (e) {
         .openPopup();
     });
 });
-
 if ((newMarker = onclick)) {
   map.removeLayer(newMarker);
   closure(marker);
