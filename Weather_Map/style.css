@@ -1,13 +1,41 @@
+@import url(https://fonts.googleapis.com/css?family=Exo:100);
+
 * {
   padding: 0;
   margin: 0;
-  font-family: monospace, sans-serif, monaco;
-  font-size: 15px;
-  color: black;
+  font-family: monospace, sans-serif;
+  /* color: white; */
 }
 
 #map {
-  height: 1080px;
+  height: 100vh;
+  width: 100vh;
+  position: relative;
+}
+
+.mq-input {
+  margin-left: 10px;
+}
+
+.mq-input:hover {
+  background-color: #d8d8d8 !important;
+}
+
+.mq-place-search{
+  position: absolute !important;
+  top: 10px;
+  left: 487px;
+  z-index: 2000;
+  height: 52px !important;
+  width: 380px !important;
+  padding: 0 30px 0 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.zoom {
+  position: absolute !important;
+  right: 90px;
 }
 
 body {
@@ -15,36 +43,289 @@ body {
   overflow-x: hidden;
 }
 
-input[type="checkbox"] {
-  display: none;
+.login {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  
+  background-size: 300% 300%;
+  background-image: linear-gradient(
+    -45deg,
+    rgba(59, 173, 227, 1) 0%,
+    rgba(87, 111, 230, 1) 25%,
+    rgba(152, 68, 183, 1) 51%,
+    rgba(255, 53, 127, 1) 100%
+  );
+  animation: AnimateBG 20s ease infinite;
 }
 
-input[type="checkbox"]:not(:checked) {
-  background: #999;
-  height: 16px;
-  width: 16px;
-  display: inline-block;
-  padding: 0 0 0 0px;
+@keyframes AnimateBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-input[type="checkbox"]:checked {
-  background: #0080ff;
-  height: 16px;
-  width: 16px;
-  display: inline-block;
-  padding: 0 0 0 0px;
+.div_button {
+  padding-top: 20%;
+  text-align: center;
 }
 
-/* layer control */
+.login_button {
+  background-image: linear-gradient(
+    92.88deg,
+    #2c2c2c 9.16%,
+    #363636 43.89%,
+    #363636 64.72%
+  );
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #c4c4c4;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 30px;
+  font-weight: 500;
+  font: exo;
+  height: 6rem;
+  padding: 0 1.6rem;
+  text-align: center;
+  text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+  transition: all 0.5s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.login_button:hover {
+  box-shadow: rgba(255, 255, 255, 1) 0 1px 60px;
+  color: white;
+  transition-duration: 0.1s;
+}
+
+@media (min-width: 768px) {
+  .login_button {
+    padding: 0 2.6rem;
+  }
+}
+
+.snowflake {
+  color: #fff;
+  font-size: 1em;
+  font-family: Arial;
+  text-shadow: 0 0 1px #000;
+}
+
+@-webkit-keyframes snowflakes-fall {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+@-webkit-keyframes snowflakes-shake {
+  0% {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+  50% {
+    -webkit-transform: translateX(80px);
+    transform: translateX(80px);
+  }
+  100% {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+}
+@keyframes snowflakes-fall {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+@keyframes snowflakes-shake {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(80px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+.snowflake {
+  position: fixed;
+  top: -10%;
+  z-index: 9999;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  -webkit-animation-name: snowflakes-fall, snowflakes-shake;
+  -webkit-animation-duration: 10s, 3s;
+  -webkit-animation-timing-function: linear, ease-in-out;
+  -webkit-animation-iteration-count: infinite, infinite;
+  -webkit-animation-play-state: running, running;
+  animation-name: snowflakes-fall, snowflakes-shake;
+  animation-duration: 10s, 3s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-play-state: running, running;
+}
+.snowflake:nth-of-type(0) {
+  left: 1%;
+  -webkit-animation-delay: 0s, 0s;
+  animation-delay: 0s, 0s;
+}
+.snowflake:nth-of-type(1) {
+  left: 10%;
+  -webkit-animation-delay: 1s, 1s;
+  animation-delay: 1s, 1s;
+}
+.snowflake:nth-of-type(2) {
+  left: 20%;
+  -webkit-animation-delay: 6s, 0.5s;
+  animation-delay: 6s, 0.5s;
+}
+.snowflake:nth-of-type(3) {
+  left: 30%;
+  -webkit-animation-delay: 4s, 2s;
+  animation-delay: 4s, 2s;
+}
+.snowflake:nth-of-type(4) {
+  left: 40%;
+  -webkit-animation-delay: 2s, 2s;
+  animation-delay: 2s, 2s;
+}
+.snowflake:nth-of-type(5) {
+  left: 50%;
+  -webkit-animation-delay: 8s, 3s;
+  animation-delay: 8s, 3s;
+}
+.snowflake:nth-of-type(6) {
+  left: 60%;
+  -webkit-animation-delay: 6s, 2s;
+  animation-delay: 6s, 2s;
+}
+.snowflake:nth-of-type(7) {
+  left: 70%;
+  -webkit-animation-delay: 2.5s, 1s;
+  animation-delay: 2.5s, 1s;
+}
+.snowflake:nth-of-type(8) {
+  left: 80%;
+  -webkit-animation-delay: 1s, 0s;
+  animation-delay: 1s, 0s;
+}
+.snowflake:nth-of-type(9) {
+  left: 90%;
+  -webkit-animation-delay: 3s, 1.5s;
+  animation-delay: 3s, 1.5s;
+}
+
+/* leaflet layer control */
+/* .leaflet-control-layers {
+  position: absolute !important;
+  left: 200px;
+} */
 
 .leaflet-control-layers-toggle {
-  background-image: url(assets/more.png) !important;
-  background-color: white;
-  background-size: 40px 40px;
-  border-radius: 25px;
+  background-image: url(images/image.png) !important;
+	background-color: #ffffff;
+  background-size: 20px 20px;
+}
+
+.leaflet-touch .leaflet-control-layers-toggle {
+background-image: url(images/image.png) !important;
+background-color: #ffffff;
 }
 
 .leaflet-control-layers-expanded {
-  color: black;
-  background-color: white;
+  color: white;
+	background-color: #2da0e2;
+}
+
+.mapquest-logo{
+  visibility: hidden;
+}
+
+.leaflet-control-attribution {
+  visibility: hidden;
+}
+
+.leaflet-control-mapquest-directions {
+  height: auto !important;
+  padding: 10px 50px 50px 10px !important;
+  margin-left: 10px !important;
+  margin-top: 10px !important;
+}
+
+.leaflet-control-mapquest-narrative {
+  background-color: #2c2c2c !important;
+  color: white !important;
+}
+
+.route-summary .time {
+  color: white !important;
+}
+
+.route-summary-container {
+  background-color: #2c2c2c !important;
+}
+
+.route-summary-name {
+  color: white !important
+}
+
+.active-route {
+  background-color: #272727 !important;
+  border-left: 4px solid black !important;
+}
+
+.alternate-route-summary {
+  border-left: 4px solid rgb(48, 48, 48) !important;
+}
+
+.route-time-summary .time {
+  color: white !important;
+}
+
+.alternate-route-summary:hover {
+  background-color: #272727 !important;
+}
+
+.active-route:hover {
+  background-color: #272727 !important;
+}
+
+.search-ahead-form input{
+  background-color: #272727 !important;
+  color: white !important;
+}
+
+.maneuver:hover {
+  background-color: #272727 !important;
+}
+
+.route-summary:hover {
+  background-color: #2c2c2c !important;
+}
+
+.geolocate-btn {
+  background-image: url(images/download.svg) !important;
+}
+
+.leaflet-control-mapquest-directions~.leaflet-left {
+  margin-left: 10px !important;
 }
