@@ -38,6 +38,11 @@
   right: 90px;
 }
 
+/* .clouds {
+  z-index: 1000;
+  position: absolute !important;
+} */
+
 body {
   overflow-y: hidden;
   overflow-x: hidden;
