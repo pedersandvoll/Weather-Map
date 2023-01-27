@@ -1,6 +1,8 @@
 var link = document.createElement("link");
 link.href = "style.css";
 
+
+
 // map
 
 L.mapquest.key = "ck2OXUAJsF0iz999XGQ62jyXo8AXOVp7";
@@ -20,8 +22,16 @@ var directions = L.mapquest
       enabled: true,
       compactResults: true,
     },
-  })
-  .addTo(map);
+  }).addTo(map);
+
+  L.control.resetView({
+    position: "topleft",
+    title: "Reset view",
+    latlng: L.latLng([60.472, 8.4689]),
+    zoom: 5
+  }).addTo(map);
+
+  var worldMiniMap = L.control.worldMiniMap({position: 'bottomright', style: {opacity: 0.5, borderRadius: '0px', backgroundColor: 'gray'}}).addTo(map);
 
 // tilelayer
 
@@ -43,17 +53,44 @@ var advanced = L.tileLayer(
   }
 );
 
+var osm = L.tileLayer(
+  'https://tile.openstreetmap.org/{z}/{x}/{y}.png', 
+  {
+    maxZoom: 3,
+  }
+);  
+
+var clouds = L.OWM.clouds({showLegend: false, opacity: 0.5, appId: '774b87efbcc42746ba3e00edf936f3b3'})
+var wind = L.OWM.wind({showLegend: false, opacity: 0.5, appId: '774b87efbcc42746ba3e00edf936f3b3'})
+var temperature = L.OWM.temperature({showLegend: false, opacity: 0.5, appId: '774b87efbcc42746ba3e00edf936f3b3'})
+
 //leaflet layer control
 
 var baseMaps = {
   "Basic Dark Theme": basicDark,
   "Basic light Theme": basicLight,
-  Advanced: advanced,
+  "Advanced": advanced,
 };
+
+var weather = {
+  "Clouds": clouds,
+  "Wind": wind,
+  "Temperature": temperature,
+}
 
 map.addControl(new L.Control.Fullscreen());
 
 L.control.locate().addTo(map);
+
+// var markers = L.markerClusterGroup({
+//   spiderfyOnMaxZoom: true,
+//   showCoverageOnHover: false,
+//   zoomToBoundsOnClick: true
+// });
+
+// leaflet layer control
+
+L.control.layers(baseMaps, weather, chkBox).addTo(map);
 
 // search
 
@@ -61,6 +98,7 @@ var search = placeSearch({
   key: "ucOKfYhC4s2tu4lumOn4CmZtcEy24PQH",
   container: document.querySelector("#place-search-input"),
 });
+
 
 var searchMarker = null;
 
@@ -200,10 +238,6 @@ locationLayer.addTo(map);
 //   closure(marker);
 // }
 
-// leaflet layer control
-
-L.control.layers(baseMaps).addTo(map);
-
 // hide/show markers
 
 var command = L.control({ position: "topright" });
@@ -231,6 +265,12 @@ function handleCommand(e) {
 
 document.getElementById("command").addEventListener("click", handleCommand);
 
+var chkBox = document.getElementById("chk").value;
+
+var productivity = {
+  "Hide/Show": osm,
+};
+
 // Hide markers based on zoom level
 
 map.on("zoomend", function () {
@@ -243,3 +283,54 @@ map.on("zoomend", function () {
     map.addLayer(locationLayer);
   }
 });
+
+// var tunnel = fetch("https://www.vegvesen.no/trafikkdata/api/", {
+//   method: "POST",
+//   headers: { "content-type": "application/json" },
+//   body: JSON.stringify({
+//     query: `{
+//       trafficRegistrationPoints(searchQuery: {roadCategoryIds: [F] }) {
+//         id
+//         name
+//         location {
+//           coordinates {
+//             latLon {
+//               lat
+//               lon
+//             }
+//           }
+//         }
+//       }
+//     }`
+//   })
+// })
+//   .then((response) => {
+//     if (response.ok) {
+//       return response.json();
+//     } else {
+//       throw new Error("NETWORK RESPONSE ERROR");
+//     }
+//   })
+//   .then(data => {
+//     console.log(data);
+//     displayTunnel(data)
+//   })
+//   .catch((error) => console.error("FETCH ERROR:", error));
+
+// function displayTunnel(data) {
+//   var tunnelIcon = L.icon({
+//     iconUrl: "images/black_marker.png",
+
+//     iconSize: [50, 50],
+//     iconAnchor: [0, 55],
+//     popupAnchor: [30, -45],
+//   });
+
+//   tunnelMarker = L.marker([], {
+//     icon: tunnelIcon,
+//   });
+//   tunnelMarker.addTo(map);
+// }
+
+
+// console.log(tunnel);
